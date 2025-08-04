@@ -1,10 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://learn-villa-api.onrender.com', // Your Flask API URL
+  baseURL: 'https://learn-villa-api.onrender.com/api',
 });
 
-// Interceptor to add the JWT token to requests
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('accessToken');
   if (token) {

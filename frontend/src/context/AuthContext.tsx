@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import api from '../services/api';
-import { jwtDecode } from 'jwt-decode'; // You might need to install jwt-decode: npm install jwt-decode
+import { jwtDecode } from 'jwt-decode';
 
 interface User {
   id: number;
@@ -42,6 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     localStorage.removeItem('accessToken');
     setUser(null);
+    window.location.href = '/login'; // Force a full redirect to clear all state
   };
 
   const isAuthenticated = !!user;

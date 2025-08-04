@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import Course, Lesson, User, Lesson
+from app.models import Course, Lesson, User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from functools import wraps
 from . import db
@@ -139,7 +139,7 @@ def update_lesson(lesson_id):
     db.session.commit()
     return jsonify({'message': 'Lesson updated successfully'})
 
-@admin_bpr.route('/lessons/<int:lesson_id>', methods=['DELETE'])
+@admin_bp.route('/lessons/<int:lesson_id>', methods=['DELETE'])
 @admin_required()
 def delete_lesson(lesson_id):
     """Deletes a single lesson."""

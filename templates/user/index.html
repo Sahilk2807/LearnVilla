@@ -1,0 +1,27 @@
+<!-- Banner -->
+<div class="bg-sky-500 text-white rounded-lg p-8 mb-8 text-center shadow-lg">
+    <h1 class="text-4xl font-bold">Welcome to Learn Villa</h1>
+    <p class="mt-2 text-lg">Your journey to knowledge begins here.</p>
+</div>
+
+<!-- Latest Courses -->
+<h2 class="text-2xl font-bold mb-4 text-slate-800">Latest Courses</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {% for course in courses %}
+    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+        <a class="ajax-link" data-page="course/{{ course.id }}">
+            <img src="/static/uploads/courses/{{ course.image or 'default.jpg' }}" alt="{{ course.title }}" class="w-full h-40 object-cover">
+            <div class="p-4">
+                <h3 class="font-bold text-lg truncate text-slate-800">{{ course.title }}</h3>
+                <p class="text-sm text-gray-600 mt-1 h-10 overflow-hidden">{{ course.description }}</p>
+                <div class="mt-4 flex items-center justify-between">
+                    <span class="text-xl font-bold text-sky-600">₹{{ course.price }}</span>
+                    <span class="text-sm text-gray-500 line-through">₹{{ course.mrp }}</span>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% else %}
+    <p class="text-gray-500">No courses available yet. Check back soon!</p>
+    {% endfor %}
+</div>

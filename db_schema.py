@@ -25,6 +25,7 @@ def init_db():
         DROP TABLE IF EXISTS chapters;
         DROP TABLE IF EXISTS enrollments;
         DROP TABLE IF EXISTS admin;
+        DROP TABLE IF EXISTS wishlist;
     ''')
 
     # --- Create users table ---
@@ -37,7 +38,6 @@ def init_db():
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     ''')
-    print("Created 'users' table.")
 
     # --- Create admin table ---
     cursor.execute('''
@@ -47,7 +47,6 @@ def init_db():
         password TEXT NOT NULL
     )
     ''')
-    print("Created 'admin' table.")
 
     # --- Create courses table ---
     cursor.execute('''
@@ -61,7 +60,6 @@ def init_db():
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
     ''')
-    print("Created 'courses' table.")
     
     # --- Create chapters table ---
     cursor.execute('''
@@ -73,7 +71,6 @@ def init_db():
         FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
     )
     ''')
-    print("Created 'chapters' table.")
 
     # --- Create enrollments table (to track user purchases) ---
     cursor.execute('''
@@ -86,7 +83,21 @@ def init_db():
         FOREIGN KEY (course_id) REFERENCES courses(id)
     )
     ''')
-    print("Created 'enrollments' table.")
+
+    # --- NEW: Create wishlist table ---
+    cursor.execute('''
+    CREATE TABLE wishlist (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        course_id INTEGER NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (course_id) REFERENCES courses(id),
+        UNIQUE(user_id, course_id)
+    )
+    ''')
+    print("Created 'wishlist' table.")
+
 
     # --- Insert Default Admin User ---
     admin_pass_hash = generate_password_hash('admin')
@@ -94,7 +105,6 @@ def init_db():
         'INSERT INTO admin (username, password) VALUES (?, ?)',
         ('admin', admin_pass_hash)
     )
-    print("Inserted default admin user (username: admin, password: admin)")
 
     conn.commit()
     conn.close()
